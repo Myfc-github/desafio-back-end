@@ -1,0 +1,16 @@
+= render "shared/mailer/head", title: "Bem-vindo à Fintera!"
+= render "shared/mailer/body" do
+  tr
+    td valign="top" width="520"
+      h1.title Bem-vindo à Fintera!
+  tr
+    td valign="top" width="520"
+      p style="text-align: center;"
+        | Você está prestes a mudar a vida financeira da sua empresa.
+        | &nbsp;
+        | Para confirmar o seu cadastro basta clicar no botão abaixo.
+  tr
+    td valign="top" width="520"
+      = link_to @call_to_action[:label], @call_to_action[:url], class: "btn"
+
+  = render "shared/mailer/footer"

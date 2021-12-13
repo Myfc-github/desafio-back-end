@@ -1,0 +1,68 @@
+Rails/Validation:
+  Enabled: true
+  Include:
+    - app/models/**/*.rb
+    - app/form_objects/**/*.rb
+Style/OpenStructUse:
+  Exclude:
+    - spec/**/*.rb
+Lint/EmptyBlock:
+  Exclude:
+    - spec/**/*.rb
+Lint/MissingSuper:
+  Exclude:
+    - 'app/services/**/*'
+Style/RescueStandardError:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/RedundantSelf:
+  Enabled: false
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Naming/AccessorMethodName:
+  Enabled: true
+Naming/PredicateName:
+  Enabled: true
+  NamePrefix:
+  - !ruby/regexp /(.*?)_is_(.*?)/
+  - is_
+  - has_
+  - have_
+  ForbiddenPrefixes:
+  - !ruby/regexp /(.*?)_is_(.*?)/
+  - is_
+  - has_
+  - have_
+Metrics/MethodLength:
+  Exclude:
+    - 'db/migrate/**/*'
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'config/**/*'
+Metrics/AbcSize:
+  Max: 18
+RSpec/MultipleExpectations:
+  Max: 5
+RSpec/MessageSpies:
+  Enabled: false
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+RSpec/MultipleMemoizedHelpers:
+  Max: 10
+RSpec/MessageChain:
+  Enabled: false
+RSpec/NestedGroups:
+  Max: 4
+RSpec/ContextWording:
+  Prefixes:
+    - when
+    - with
+    - without
+    - and

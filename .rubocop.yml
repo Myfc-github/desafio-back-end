@@ -1,0 +1,21 @@
+inherit_from:
+  - .rubocop_desafio.yml
+
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  SuggestExtensions: false
+  NewCops: enable
+  TargetRubyVersion: 3.0
+  Exclude:
+    - "vendor/**/*"
+    - "db/schema.rb"
+    - "node_modules/**/*"
+    - "bin/*"
+    - "tmp/**/*"
+    - "config/**/*"
+    - "spec/files/*"
+    - "Rakefile"
+    
