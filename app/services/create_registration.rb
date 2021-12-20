@@ -1,47 +1,45 @@
 class CreateRegistration < ApplicationService
+
+  attr_accessor :payload
+
   def initialize(payload)
     @payload = payload
   end
 
   def call
-    if @payload[:from_partner] == true && @payload[:many_partners] == true
-      @result = create_account_and_notify_partners
-    elsif @payload[:from_partner] == true
-      @result = create_account_and_notify_partner
+    if payload[:from_partner] && payload[:many_partners]
+      result = create_account_and_notify_partners
+    elsif payload[:from_partner]
+      result = create_account_and_notify_partner
     else
-      @result = create_account
+      result = create_account
     end
 
-    return Result.new(true, @result.data) if @result.success?
-
-    @result
+    result
   end
 
   private
 
   def create_account_and_notify_partner
-    CreateAccountAndNotifyPartner.call(@payload)
+    CreateAccountAndNotifyPartner.call(payload, fintera_users)
   end
 
   def create_account_and_notify_partners
-    CreateAccountAndNotifyPartners.call(@payload)
+    CreateAccountAndNotifyPartners.call(payload, fintera_users)
   end
 
   def create_account
-    if @payload[:name].include?("Fintera") && fintera_users(@payload) == true
-      CreateAccount.call(@payload, true)
-    else
-      CreateAccount.call(@payload, false)
-    end
+    from_fintera = payload[:name].include?("Fintera") && fintera_users
+    CreateAccount.call(payload, from_fintera)
   end
 
-  def fintera_users(payload)
-    with_fintera_user = false
-
-    payload[:users].each do |user|
-      with_fintera_user = true if user[:email].include? "fintera.com.br"
+  def fintera_users
+    payload[:entities].each do |entity|
+      entity[:users].each do |user|
+        return true if user[:email].include? "fintera.com.br"
+      end
     end
 
-    with_fintera_user
+    false
   end
 end

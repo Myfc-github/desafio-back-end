@@ -73,3 +73,8 @@ O desafio back-end permite execução da suite de testes em paralelo, através d
 ## Rubocop
 
 Para rodar o rubocop, rode: `rubocop --parallel`
+
+## Notas
+
+Correção no retorno dos seguintes services: create_account_and_notify_partner, create_account_and_notify_partners para retornarem Result e não o response, já que no controller era esperado chegar como Result.
+Código Utilizado: ApplicationService::Result.new(response.success?, response.body, nil)

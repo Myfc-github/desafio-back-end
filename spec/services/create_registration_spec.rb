@@ -9,21 +9,40 @@ RSpec.describe CreateRegistration do
         {
           name: Faker::Company.name,
           from_partner: true,
-          users: [
+          entities: [
             {
-              first_name: Faker::Name.first_name,
-              last_name: Faker::Name.last_name,
-              email: Faker::Internet.email,
-              phone: "(11) 97111-0101",
+              name: Faker::Company.name,
+              users: [
+                {
+                  first_name: Faker::Name.first_name,
+                  last_name: Faker::Name.last_name,
+                  email: email,
+                  phone: "(11) 97111-0101",
+                },
+              ],
             },
           ],
         }
       end
 
-      it "calls CreateAccountAndNotifyPartner service" do
-        expect(CreateAccountAndNotifyPartner).to receive(:call).with(payload).and_return(fake_result)
+      context "when some user is from fintera" do
+        let(:email) { "fintera.com.br" }
+        let(:from_fintera) { true }
+        it "calls CreateAccountAndNotifyPartner service" do
+          allow(CreateAccountAndNotifyPartner).to receive(:call).with(payload, from_fintera).and_return(fake_result)
 
-        call
+          call
+        end
+      end
+
+      context "when users are not from fintera" do
+        let(:email) { "other.com.br" }
+        let(:from_fintera) { false }
+        it "calls CreateAccountAndNotifyPartner service" do
+          allow(CreateAccountAndNotifyPartner).to receive(:call).with(payload, from_fintera).and_return(fake_result)
+
+          call
+        end
       end
     end
 
@@ -33,21 +52,40 @@ RSpec.describe CreateRegistration do
           name: Faker::Company.name,
           from_partner: true,
           many_partners: true,
-          users: [
+          entities: [
             {
-              first_name: Faker::Name.first_name,
-              last_name: Faker::Name.last_name,
-              email: Faker::Internet.email,
-              phone: "(11) 97111-0101",
+              name: Faker::Company.name,
+              users: [
+                {
+                  first_name: Faker::Name.first_name,
+                  last_name: Faker::Name.last_name,
+                  email: email,
+                  phone: "(11) 97111-0101",
+                },
+              ],
             },
           ],
         }
       end
 
-      it "calls CreateAccountAndNotifyPartner service" do
-        expect(CreateAccountAndNotifyPartners).to receive(:call).with(payload).and_return(fake_result)
+      context "when some user is from fintera" do
+        let(:email) { "fintera.com.br" }
+        let(:from_fintera) { true }
+        it "calls CreateAccountAndNotifyPartner service" do
+          allow(CreateAccountAndNotifyPartners).to receive(:call).with(payload, from_fintera).and_return(fake_result)
 
-        call
+          call
+        end
+      end
+
+      context "when users are not from fintera" do
+        let(:email) { "other.com.br" }
+        let(:from_fintera) { false }
+        it "calls CreateAccountAndNotifyPartner service" do
+          allow(CreateAccountAndNotifyPartners).to receive(:call).with(payload, from_fintera).and_return(fake_result)
+
+          call
+        end
       end
     end
 
@@ -55,19 +93,51 @@ RSpec.describe CreateRegistration do
       let(:payload) do
         {
           name: "Fintera - #{Faker::Company.name}",
-          users: [
+          entities: [
             {
-              first_name: Faker::Name.first_name,
-              last_name: Faker::Name.last_name,
-              email: Faker::Internet.email,
-              phone: "(11) 97111-0101",
+              name: Faker::Company.name,
+              users: [
+                {
+                  first_name: Faker::Name.first_name,
+                  last_name: Faker::Name.last_name,
+                  email: Faker::Internet.email,
+                  phone: "(11) 97111-0101",
+                },
+              ],
             },
           ],
         }
       end
 
       it "calls CreateAccount service" do
-        expect(CreateAccount).to receive(:call).with(payload, false).and_return(fake_result)
+        allow(CreateAccount).to receive(:call).with(payload, false).and_return(fake_result)
+
+        call
+      end
+    end
+
+    context "when account is not from a partner and have fintera users" do
+      let(:payload) do
+        {
+          name: "Fintera - #{Faker::Company.name}",
+          entities: [
+            {
+              name: Faker::Company.name,
+              users: [
+                {
+                  first_name: Faker::Name.first_name,
+                  last_name: Faker::Name.last_name,
+                  email: "fintera.com.br",
+                  phone: "(11) 97111-0101",
+                },
+              ],
+            },
+          ],
+        }
+      end
+
+      it "calls CreateAccount service" do
+        allow(CreateAccount).to receive(:call).with(payload, true).and_return(fake_result)
 
         call
       end
