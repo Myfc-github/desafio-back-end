@@ -84,7 +84,7 @@ POST /api/v1/registrations
 
     - Hoje a criação de uma conta, também inclui o cadastros dos usuários, desta forma UMA conta pode ter N usuários, e UM usuário pertence a UMA conta. Porém um novo requisito chegou: alguns dos nossos clientes têm mais de uma empresa, e precisam que os seus usuários possam acessar diferentes empresas. Portanto, precisamos ter um cadastro único de usuários, e que esses usuários estejam relacionados as empresas (chamadas de `entities`), e não mais a conta em si (diagrama de como é esperado ficar está abaixo).
     - O corpo do endpoint de registro precisará ser alterado para suportar esta funcionalidade.
-    - Lembre-se de ajsutar os testes para cobrir a nova funcionalidade
+    - Lembre-se de ajustar os testes para cobrir a nova funcionalidade
 
 ![Diagrama do banco](docs/assets/diagram.png)
 
