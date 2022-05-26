@@ -20,16 +20,71 @@ Dicas:
 * dê uma olhada no nosso [Playbook](https://github.com/Myfc-github/playbook), lá explicamos "nosso jeito" de desenvolver
 * ao entregar o desafio, fique livre para adicionar neste README.md ou criar algum outro markdown para complementar algo sobre o desafio (isso é totalmente opcional)
 
+## API
+### Registration
+
+```http
+POST /api/v1/registrations
+```
+
+#### Body
+```json
+{ 
+  "account": {
+    "name": "Teste",
+    "from_partner": true,
+    "many_partners": true,
+    "users": [
+      {
+        "email": "someone@example.com",
+        "first_name": "Example",
+        "last_name": "Fintera User",
+        "phone": "62999999999"
+      }
+    ]
+  }
+}
+```
+
+#### Response
+##### Success
+```json
+{
+  "message": "Registro realizado com sucesso"
+}
+```
+##### Error
+```json
+{
+  "error": "Name can't be blank"
+}
+```
+
+#### Registration Params
+| Param | Type | Description |
+| :--- | :--- | :--- |
+| name | string(required) | Nome da conta a ser criada |
+| from_partner | boolean | Identifica se a conta é de um parseiro nosso |
+| many_partners | boolean | Identifica se a conta esta vinculada a vários parseiros nossos |
+| users | array(required) | Array de usuários associados à esta conta |
+
+#### User Params
+| Param | Type | Description |
+| :--- | :--- | :--- |
+| email | string | E-mail do usuário |
+| first_email | string | Primeiro nome do usuário |
+| last_name | string | Sobrenome do usuário |
+| phone | string | Telefone do usuário |
 
 ## Entregáveis
 
 1. Refatoração do código de criação de conta. De acordo com o seu conhecimento, avalie o código e realize uma refatoração com o objetivo de diminuir a complexidade atual
 2. Deixamos alguns trechos do código sem cobertura, cabe a você descobrir quais pontos são e adicionar os novos testes
-3. Criação de duas novas funcionalidades:
+3. Criação de uma nova funcionalidade:
 
-    - Hoje a criação de uma conta, também inclui o cadastros dos usuários, desta forma UMA conta pode ter N usuários, e UM usuário pertence a UMA conta. Porém um novo requisito chegou: alguns dos nossos clientes têm mais de uma empresa, e precisam que os seus usuários possam acessar diferentes empresas. Portanto, precisamos ter um cadastro único de usuários, e esses usuários estarem relacionados as empresas (chamadas de `entities`), e não mais a conta em si (diagrama de como é esperado ficar está abaixo).
-    - Estamos falando com alguns parceiros, que irão nos ajudar a adquirir novos clientes. Eles hoje usam o [SQS](https://aws.amazon.com/sqs/) para realizar essa comunicação. Precisamos criar um consumidor que receba as mensagens de uma fila, e siga com de criação de conta já existente. O payload que será enviado é o mesmo payload JSON que recebemos via API REST. Chegamos a criar uma suíte de teste com dois contextos e o exemplo do payload em: `spec/workers/new_registation_worker_spec.rb`
-
+    - Hoje a criação de uma conta, também inclui o cadastros dos usuários, desta forma UMA conta pode ter N usuários, e UM usuário pertence a UMA conta. Porém um novo requisito chegou: alguns dos nossos clientes têm mais de uma empresa, e precisam que os seus usuários possam acessar diferentes empresas. Portanto, precisamos ter um cadastro único de usuários, e que esses usuários estejam relacionados as empresas (chamadas de `entities`), e não mais a conta em si (diagrama de como é esperado ficar está abaixo).
+    - O corpo do endpoint de registro precisará ser alterado para suportar esta funcionalidade.
+    - Lembre-se de ajsutar os testes para cobrir a nova funcionalidade
 
 ![Diagrama do banco](docs/assets/diagram.png)
 
@@ -42,11 +97,18 @@ Deixamos na aplicação vários pontos que podem ser refatorados, se identificar
 Você precisa:
  * docker
  * docker-compose
- * ruby 3.0.2
+ * ruby 3.0.3
 
 Para iniciar o container do PostgreSQL, basta rodar na raíz do projeto: `docker-compose up`
 
+> Se enfrentar dificuldade com o docker, suba um banco PostgreSQL localmente e ajuste as configurações de conexão.
+
 Crie um arquivo `.env` e atualize as variáveis que precisam ser definidas: `cp .env.example .env`
+
+Execute o bundle para instalar as dependências do projeto.
+
+Inicialize a base de dados com:
+```rails db:setup```
 
 Já para iniciar a aplicação: `foreman start`
 
