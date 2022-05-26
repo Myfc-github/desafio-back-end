@@ -25,12 +25,6 @@ gem "bootsnap", ">= 1.4.4", require: false
 # Draper adds an object-oriented layer of presentation logic to your Rails apps. Read more: https://github.com/drapergem/draper
 gem "draper", "~> 4.0", ">= 4.0.2"
 
-# The official AWS SDK for Ruby for SQS
-gem "aws-sdk-sqs", "~> 1.48"
-
-# Shoryuken is a super efficient AWS SQS thread based message processor
-gem "shoryuken", "~> 5.3"
-
 # Slim templates generator for Rails
 gem "slim-rails"
 

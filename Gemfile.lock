@@ -67,18 +67,6 @@ GEM
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.2)
-    aws-eventstream (1.2.0)
-    aws-partitions (1.540.0)
-    aws-sdk-core (3.124.0)
-      aws-eventstream (~> 1, >= 1.0.2)
-      aws-partitions (~> 1, >= 1.525.0)
-      aws-sigv4 (~> 1.1)
-      jmespath (~> 1.0)
-    aws-sdk-sqs (1.48.0)
-      aws-sdk-core (~> 3, >= 3.122.0)
-      aws-sigv4 (~> 1.1)
-    aws-sigv4 (1.4.0)
-      aws-eventstream (~> 1, >= 1.0.2)
     bootsnap (1.9.3)
       msgpack (~> 1.0)
     builder (3.2.4)
@@ -144,7 +132,6 @@ GEM
     hashdiff (1.0.1)
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
-    jmespath (1.4.0)
     listen (3.7.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -254,10 +241,6 @@ GEM
       rubocop (~> 1.19)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
-    shoryuken (5.3.0)
-      aws-sdk-core (>= 2)
-      concurrent-ruby
-      thor
     shoulda-matchers (5.0.0)
       activesupport (>= 5.2.0)
     simplecov (0.21.2)
@@ -302,7 +285,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aws-sdk-sqs (~> 1.48)
   bootsnap (>= 1.4.4)
   byebug
   capybara
@@ -322,7 +304,6 @@ DEPENDENCIES
   rubocop
   rubocop-rails
   rubocop-rspec
-  shoryuken (~> 5.3)
   shoulda-matchers
   simplecov
   slim-rails

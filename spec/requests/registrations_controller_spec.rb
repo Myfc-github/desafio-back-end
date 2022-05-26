@@ -18,7 +18,7 @@ RSpec.describe "Api::V1::RegistrationsController", type: :request do
 
     it "renders 200 success" do
       expect(response).to have_http_status(:created)
-      expect(JSON.parse(response.body)).to include({ "id" => Account.last.id })
+      expect(JSON.parse(response.body)).to include({ "message" => "Registro realizado com sucesso" })
     end
   end
 end
