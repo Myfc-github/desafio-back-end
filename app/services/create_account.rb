@@ -1,16 +1,19 @@
 class CreateAccount < ApplicationService
   def initialize(payload, from_fintera = false)
-    @payload = payload[:account]
+    @payload = payload
     @from_fintera = from_fintera
-    @users =  @payload[:users]
-    @erros = []
+    @errors = []
+    
   end
 
   def call
     @errors << "Account is not valid" if @payload.blank?
+    return create_result if @errors.present?
+
     @account = Account.new(account_params)
     @errors << @account.errors.full_messages unless @account.save
-
+    return create_result if @errors.present?
+    
     users = []
     users_params(@account).each do |user_param|
       users << User.create(user_param)
@@ -31,7 +34,7 @@ class CreateAccount < ApplicationService
   end
   
   def users_params(account)
-    @users.map do |user|
+    @payload[:users].map do |user|
       {
         first_name: user[:first_name],
         last_name: user[:last_name],

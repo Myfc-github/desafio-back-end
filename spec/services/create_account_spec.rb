@@ -16,6 +16,7 @@ RSpec.describe CreateAccount do
           ],
         }
       end
+
       let(:expected_result) { ApplicationService::Result.new(true, Account.last, nil) }
 
       it { is_expected.to eql(expected_result) }
@@ -23,8 +24,8 @@ RSpec.describe CreateAccount do
 
     context "when account is not created" do
       let(:payload) do
-        {
-          name: "",
+      {    
+        name: "",
           users: [
             {
               first_name: Faker::Name.first_name,
