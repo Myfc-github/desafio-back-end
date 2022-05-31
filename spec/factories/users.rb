@@ -5,6 +5,5 @@ FactoryBot.define do
     email { Faker::Internet.unique.email }
     phone { Faker::PhoneNumber.cell_phone }
     uuid { Faker::Internet.uuid }
-    association :account
   end
 end

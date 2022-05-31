@@ -16,7 +16,7 @@ module Api
 
       def create_params
         params.require(:account)
-              .permit(:name, :from_partner, :many_partners, users: %i[email first_name last_name phone])
+              .permit(:name, :entity_name, :from_partner, :many_partners, users: %i[email first_name last_name phone])
       end
     end
   end
