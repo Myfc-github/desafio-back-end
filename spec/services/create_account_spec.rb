@@ -7,6 +7,7 @@ RSpec.describe CreateAccount do
       let(:payload) do
         {
           name: Faker::Company.name,
+          entity_name: Faker::Company.name,
           users: [
             {
               first_name: Faker::Name.first_name,

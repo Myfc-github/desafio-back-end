@@ -10,13 +10,28 @@ class CreateAccount < ApplicationService
     @errors << "Account is not valid" if @payload.blank?
     return create_result if @errors.present?
 
-    @account = Account.new(account_params)
+    @account = Account.create(account_params)
     @errors << @account.errors.full_messages unless @account.save
+    return create_result if @errors.present?
+
+    entity = Entity.create(name: @payload[:entity_name], account: @account)
+    @errors << entity.errors.full_messages unless entity.save
     return create_result if @errors.present?
     
     users = []
-    users_params(@account).each do |user_param|
-      users << User.create(user_param)
+    users_params.each do |user_param|
+      puts user_param[:email]
+      user = User.create(user_param)
+      @errors << user.errors.full_messages unless user.save
+      return create_result if @errors.present?
+
+      users << user
+    end
+
+    users.each do |user|
+      entity_user = EntityUser.create(user: user, entity: entity)
+      @errors << entity_user.errors.full_messages unless entity_user.save
+      return create_result if @errors.present?
     end
     return create_result
   end
@@ -33,14 +48,13 @@ class CreateAccount < ApplicationService
     {name: @payload[:name], active: true} 
   end
   
-  def users_params(account)
+  def users_params
     @payload[:users].map do |user|
       {
         first_name: user[:first_name],
         last_name: user[:last_name],
         email: user[:email],
         phone: user[:phone].to_s.gsub(/\D/, ""),
-        account_id: account.id,
         created_at: Time.zone.now,
         updated_at: Time.zone.now,
       }
