@@ -8,7 +8,7 @@ O nosso desafio consiste dos seguintes entregáveis:
 
 * refatoração do código de criação de conta, que está complexo
 * criação de testes unitários para os trechos de código que estão sem cobertura
-* criação de uma novas funcionalidades
+* criação de uma nova funcionalidade
 
 Para entregar o desafio, faça um clone desse repositório, e nos envie por e-mail o link dele.
 
