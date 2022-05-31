@@ -3,43 +3,36 @@ class CreateAccount < ApplicationService
     @payload = payload
     @from_fintera = from_fintera
     @errors = []
+    
   end
 
   def call
-    if !is_account_valid?
-      @errors << "Account is not valid"
-      Result.new(false, nil, @errors.join(","))
-    else
-      account = Account.new(account_params)
-      if account.save && User.insert_all(users_params(account))
-        Result.new(true, account)
-      else
-        @errors << account.errors.full_messages
-        Result.new(false, nil, @errors.join(","))
-      end
+    @errors << "Account is not valid" if @payload.blank?
+    return create_result if @errors.present?
+
+    @account = Account.new(account_params)
+    @errors << @account.errors.full_messages unless @account.save
+    return create_result if @errors.present?
+    
+    users = []
+    users_params(@account).each do |user_param|
+      users << User.create(user_param)
     end
+    return create_result
   end
 
-  def is_account_valid?
-    return false if @payload.blank?
+  private
 
-    true
+  def create_result
+    return Result.new(true, @account) unless @errors.present?
+    return Result.new(false, nil, @errors.join(", "))
   end
 
   def account_params
-    if @from_fintera
-      {
-        name: @payload[:name],
-        active: true,
-      }
-    else
-      {
-        name: @payload[:name],
-        active: false,
-      }
-    end
+    return {name: @payload[:name], active: false} unless @from_fintera
+    {name: @payload[:name], active: true} 
   end
-
+  
   def users_params(account)
     @payload[:users].map do |user|
       {

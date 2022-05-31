@@ -2,13 +2,14 @@ module Api
   module V1
     class RegistrationsController < ApplicationController
       def create
+        
         result = CreateRegistration.call(create_params)
-
         if result.success?
           render json: { message: "Registro realizado com sucesso" }, status: :created
         else
           render json: { error: result.error }, status: :unprocessable_entity
         end
+
       end
 
       private
